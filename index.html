@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="build/react.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+    <script type="text/jsx" src="src/helloworld.js"></script>
+    <link rel="stylesheet" href="src/styles.css"></link>
+  </head>
+  <body>
+    <div id="example"></div>
+    
+    <script type="text/jsx">
+    	/** @jsx React.DOM */  
+    	React.renderComponent(<RedditApp pollInterval="60000" subreddit="pics" />, document.getElementById('example'));
+    </script>
+
+  </body>
+</html>
