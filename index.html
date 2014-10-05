@@ -4,15 +4,55 @@
   	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="build/react.js"></script>
     <script src="build/JSXTransformer.js"></script>
-    <script type="text/jsx" src="src/helloworld.js"></script>
-    <link rel="stylesheet" href="src/styles.css"></link>
+    
+    <script type="text/javascript" src="src/framework/underscore-min.js"></script>
+    <script type="text/javascript" src="src/framework/backbone-min.js"></script>
+	  <script type="text/javascript" src="src/framework/Dispatcher.js"></script>
+    <script type="text/javascript" src="src/dispatcher/RedditDispatcher.js"></script>
+
+    <script type="text/javascript" src="src/constants/ActionTypes.js"></script>
+    <script type="text/javascript" src="src/actions/SubRedditActionCreator.js"></script>
+    <script type="text/javascript" src="src/stores/SubRedditStore.js"></script>
+    <script type="text/javascript" src="src/utils/WebUtils.js"></script>
+
+    <script type="text/jsx" src="src/components/SubRedditListView.js"></script>
+    
+    
+    <script type="text/jsx" src="src/app.js"></script>
+    
+    <link rel="stylesheet" href="src/styles/styles.css"></link>
   </head>
   <body>
-    <div id="example"></div>
+
+     <div>
+        <h3>Reddit Single Page App!</h3>
+        <div id="app"></div>
+      </div>
+    
     
     <script type="text/jsx">
     	/** @jsx React.DOM */  
-    	React.renderComponent(<RedditApp pollInterval="60000" subreddit="pics" />, document.getElementById('example'));
+
+      var RedditRouter = Backbone.Router.extend({
+
+        routes: {
+          "r/:subreddit(/)": "subreddit", 
+          "*action": "index",
+        },
+
+        index: function(args) {
+          console.log("route: index: "+args);
+          React.renderComponent( <SubRedditListView />, document.getElementById('app'));
+        },
+
+        subreddit: function(subreddit) {
+          console.log("route: subreddit: "+subreddit);
+          React.renderComponent( <PostListView subreddit={subreddit} />, document.getElementById('app'));
+        }
+      });
+
+      window.router = new RedditRouter();
+      Backbone.history.start({pushState: true});
     </script>
 
   </body>

@@ -24,7 +24,6 @@ var Post = React.createClass({
 
 var PostList = React.createClass({
 
-
   render: function() {
     var itemNodes = this.props.posts.map(function(post) {
       
@@ -42,35 +41,36 @@ var PostList = React.createClass({
 });
 
 
-var RedditApp = React.createClass({
-  getInitialState: function() {
-    return {posts: [], subreddit: ''};
+var PostListView = React.createClass({
+
+  getStateFromStores: function() {
+    return {
+      posts: reddit.SubRedditStore.getPosts(this.props.subreddit)
+    };
   },
-  
-  refreshFromServer: function() {
-    $.ajax({
-      url: "http://www.reddit.com/r/" + this.props.subreddit + ".json",
-      dataType: 'json',
-      success: function(data) {
-        this.setState({posts: data.data.children});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
+
+  getInitialState: function() {
+    return this.getStateFromStores();
   },
 
   componentDidMount: function() {
-    this.refreshFromServer();
-    //setInterval(this.refreshFromServer, this.props.pollInterval);
+      console.log("post list view: componentDidMount");
+      reddit.SubRedditStore.addChangeListener(this._onChange);
+      reddit.WebUtils.getPosts(this.props.subreddit);
+  },
+
+  componentWillUnmount: function() {
+    console.log("post list view: componentWillUnmount");
+    reddit.SubRedditStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function() {
+    this.setState(this.getStateFromStores());
   },
 
   render: function() {
     return (
-      <div>
-        <h3>Reddit Single Page App</h3>
-        <PostList posts={this.state.posts} />
-      </div>
-    );
+         <PostList posts={this.state.posts} />
+      )
   }
 });
