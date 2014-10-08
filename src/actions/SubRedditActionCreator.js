@@ -16,6 +16,15 @@ reddit.SubRedditActionCreator = _.extend({
 			subreddit: subreddit,
 			rawData: rawData
 		});
+	},
+
+	receiveComments: function(subreddit, article, rawData){
+		reddit.RedditDispatcher.handleServerAction({
+			type: reddit.ActionTypes.RECEIVE_RAW_COMMENTS,
+			subreddit: subreddit,
+			article: article,
+			rawData: rawData
+		});	
 	}
 
 

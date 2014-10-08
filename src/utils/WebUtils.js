@@ -29,6 +29,20 @@ reddit.WebUtils = _.extend({
 	        console.error(status, err.toString());
 	      }.bind(this)
 	    });
+	},
+
+	getComments: function(subreddit, article){
+
+		$.ajax({
+	      url: "http://www.reddit.com/r/"+subreddit+"/comments/"+article+"/.json",
+	      dataType: 'json',
+	      success: function(data) {
+	        reddit.SubRedditActionCreator.receiveComments(subreddit, article, data);
+	      }.bind(this),
+	      error: function(xhr, status, err) {
+	        console.error(status, err.toString());
+	      }.bind(this)
+	    });
 	}		
 
 }, {});

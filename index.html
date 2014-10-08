@@ -15,8 +15,8 @@
     <script type="text/javascript" src="src/stores/SubRedditStore.js"></script>
     <script type="text/javascript" src="src/utils/WebUtils.js"></script>
 
+    <script type="text/jsx" src="src/components/CommentsListView.js"></script>
     <script type="text/jsx" src="src/components/SubRedditListView.js"></script>
-    
     
     <script type="text/jsx" src="src/app.js"></script>
     
@@ -36,6 +36,7 @@
       var RedditRouter = Backbone.Router.extend({
 
         routes: {
+          "r/:subreddit/comments/:article(/)(*display)": "article", 
           "r/:subreddit(/)": "subreddit", 
           "*action": "index",
         },
@@ -48,11 +49,17 @@
         subreddit: function(subreddit) {
           console.log("route: subreddit: "+subreddit);
           React.renderComponent( <PostListView subreddit={subreddit} />, document.getElementById('app'));
+        },
+
+        article: function(subreddit, article){
+        console.log("route: subreddit: "+subreddit + ", article: "+article);
+          React.renderComponent( <CommentListView subreddit={subreddit} article={article} />, document.getElementById('app'));
         }
+
       });
 
       window.router = new RedditRouter();
-      Backbone.history.start({pushState: true});
+      Backbone.history.start({pushState: false});
     </script>
 
   </body>

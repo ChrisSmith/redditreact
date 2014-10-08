@@ -7,6 +7,7 @@ reddit.SubRedditStore = _.extend({
 
   _subreddits: [],
   _postsBySubreddit: {},
+  _comments: {},
 
 	emitChange: function() {
 		this.trigger(this.CHANGE_EVENT);
@@ -28,6 +29,10 @@ reddit.SubRedditStore = _.extend({
     return this._postsBySubreddit[subreddit] || [];
   },
 
+  getComments: function(subreddit, article){
+    return this._comments[subreddit+'/'+article] || [];
+  },
+
   dispatch: function(payload){
     var action = payload.action;
 
@@ -43,6 +48,10 @@ reddit.SubRedditStore = _.extend({
         this.emitChange();
         break;
 
+      case reddit.ActionTypes.RECEIVE_RAW_COMMENTS:
+        this._comments[action.subreddit+'/'+action.article] = action.rawData[1].data.children;
+        this.emitChange();
+        break;
 
       default:
         // do nothing

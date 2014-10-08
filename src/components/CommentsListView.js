@@ -1,51 +1,45 @@
 /** @jsx React.DOM */  
 
-var Post = React.createClass({
+var Comment = React.createClass({
   
   getInitialState: function() {
     return {data:{} };
   },
 
-  onClick: function(){
-    Backbone.history.navigate(this.props.data.permalink, {trigger: true});
-  },
-
   render: function(){
     return (
-        <div onClick={this.onClick} className="post">
-          <img src={this.props.data.thumbnail}></img>
-          <h3>{this.props.data.title}</h3>
-          <div>{this.props.data.selftext}</div>
+        <div className="post">
+          <div>{this.props.data.body}</div>
           <div className="clearfix" ></div>
         </div>
       )
   }
 });
 
-var PostList = React.createClass({
+var CommentList = React.createClass({
 
   render: function() {
-    var itemNodes = this.props.posts.map(function(post) {
+    var itemNodes = this.props.comments.map(function(comment) {
       
       return (
-          <Post data={post.data} key={post.data.id} />
+          <Comment data={comment.data} key={comment.data.id} />
           );
     });
     
     return (
         <div className="postList">
-          {itemNodes}
+          {itemNodes}   
         </div>
         );
   }
 });
 
 
-var PostListView = React.createClass({
+var CommentListView = React.createClass({
 
   getStateFromStores: function() {
     return {
-      posts: reddit.SubRedditStore.getPosts(this.props.subreddit)
+      comments: reddit.SubRedditStore.getComments(this.props.subreddit, this.props.article)
     };
   },
 
@@ -54,13 +48,13 @@ var PostListView = React.createClass({
   },
 
   componentDidMount: function() {
-      console.log("post list view: componentDidMount");
+      console.log("CommentListView: componentDidMount");
       reddit.SubRedditStore.addChangeListener(this._onChange);
-      reddit.WebUtils.getPosts(this.props.subreddit);
+      reddit.WebUtils.getComments(this.props.subreddit, this.props.article);
   },
 
   componentWillUnmount: function() {
-    console.log("post list view: componentWillUnmount");
+    console.log("CommentListView: componentWillUnmount");
     reddit.SubRedditStore.removeChangeListener(this._onChange);
   },
 
@@ -70,7 +64,7 @@ var PostListView = React.createClass({
 
   render: function() {
     return (
-         <PostList posts={this.state.posts} />
+         <CommentList comments={this.state.comments} />
       )
   }
 });
