@@ -74,3 +74,56 @@ var PostListView = React.createClass({
       )
   }
 });
+
+ var home = {
+    href: "/#",
+    name: "reddit"
+  };
+
+
+var NavigationView = React.createClass({
+
+  getInitialState: function(){
+    return {
+      links: [home]
+    };
+  },
+
+  setRoute: function(subreddit, article){
+      var links = [home];
+      if(subreddit){
+        links.push({
+          href: "/#r/"+subreddit,
+          name: "/r/"+subreddit
+        });
+      }
+
+      if(article){
+        links.push({
+          href: "/#r/"+subreddit+'/comments/'+article,
+          name: '/'+article
+        });
+      }
+
+      this.setState({links: links});
+  },
+
+  render: function(){
+    var links = this.state.links.map(function(link) {
+        return (
+          <li><a href={link.href}>{link.name}</a></li>
+        );
+    });
+    
+    return (
+      <ul className="links">
+        {links} &nbsp;
+      </ul>
+      );
+  }
+
+});
+
+
+
+

@@ -150,7 +150,9 @@ var CommentListView = React.createClass({
     return (
         <div>
           <div className="post">
-            <img src={this.state.article.data.thumbnail}></img>
+            <a href={this.state.article.data.url} >
+              <img src={this.state.article.data.thumbnail}></img>
+            </a>
             <h3>{this.state.article.data.title}</h3>
             <div>{this.state.article.data.selftext}</div>
             <div>Score: {this.state.article.data.score}</div>

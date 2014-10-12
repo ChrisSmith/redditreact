@@ -25,13 +25,15 @@
   <body>
 
      <div>
-        <h3><a href="/#">Reddit Single Page App!</a></h3>
+        <div id="nav"></div>
         <div id="app"></div>
       </div>
     
     
     <script type="text/jsx">
     	/** @jsx React.DOM */  
+
+      var navView = React.renderComponent(<NavigationView />, document.getElementById('nav'));
 
       var RedditRouter = Backbone.Router.extend({
 
@@ -43,20 +45,25 @@
 
         index: function(args) {
           console.log("route: index: "+args);
+          navView.setRoute();
           React.renderComponent( <SubRedditListView />, document.getElementById('app'));
         },
 
         subreddit: function(subreddit) {
           console.log("route: subreddit: "+subreddit);
+          navView.setRoute(subreddit);
           React.renderComponent( <PostListView subreddit={subreddit} />, document.getElementById('app'));
         },
 
         article: function(subreddit, article){
         console.log("route: subreddit: "+subreddit + ", article: "+article);
+        navView.setRoute(subreddit, article);
           React.renderComponent( <CommentListView subreddit={subreddit} articleId={article} />, document.getElementById('app'));
         }
 
       });
+
+
 
       window.router = new RedditRouter();
       Backbone.history.start({pushState: false});

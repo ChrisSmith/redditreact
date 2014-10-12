@@ -25,3 +25,9 @@
 .clearfix {
 	*zoom: 1;
 }
+
+.links li {
+	display: inline;
+	float: left;
+	padding: 0px 2px;
+}
