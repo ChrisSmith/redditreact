@@ -30,7 +30,8 @@ reddit.SubRedditStore = _.extend({
   },
 
   getComments: function(subreddit, article){
-    return this._comments[subreddit+'/'+article] || [];
+    var key = subreddit+'/'+article;
+    return this._comments[key] || {};
   },
 
   dispatch: function(payload){
@@ -49,7 +50,10 @@ reddit.SubRedditStore = _.extend({
         break;
 
       case reddit.ActionTypes.RECEIVE_RAW_COMMENTS:
-        this._comments[action.subreddit+'/'+action.article] = action.rawData[1].data.children;
+        this._comments[action.subreddit+'/'+action.article] = {
+          article: action.rawData[0].data.children[0],
+          comments: action.rawData[1].data.children
+        };
         this.emitChange();
         break;
 

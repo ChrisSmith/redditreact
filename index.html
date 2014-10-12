@@ -53,7 +53,7 @@
 
         article: function(subreddit, article){
         console.log("route: subreddit: "+subreddit + ", article: "+article);
-          React.renderComponent( <CommentListView subreddit={subreddit} article={article} />, document.getElementById('app'));
+          React.renderComponent( <CommentListView subreddit={subreddit} articleId={article} />, document.getElementById('app'));
         }
 
       });
