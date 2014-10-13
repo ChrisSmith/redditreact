@@ -75,32 +75,35 @@ var PostListView = React.createClass({
   }
 });
 
- var home = {
-    href: "/#",
-    name: "reddit"
-  };
-
+ 
 
 var NavigationView = React.createClass({
 
+  getHome: function(){
+    var home = {
+      href: Backbone.history.root + "/#",
+      name: "reddit"
+    };
+  },
+
   getInitialState: function(){
     return {
-      links: [home]
+      links: [this.getHome()]
     };
   },
 
   setRoute: function(subreddit, article){
-      var links = [home];
+      var links = [this.getHome()];
       if(subreddit){
         links.push({
-          href: "/#r/"+subreddit,
+          href: Backbone.history.root + "/#r/"+subreddit,
           name: "/r/"+subreddit
         });
       }
 
       if(article){
         links.push({
-          href: "/#r/"+subreddit+'/comments/'+article,
+          href: Backbone.history.root + "/#r/"+subreddit+'/comments/'+article,
           name: '/'+article
         });
       }
