@@ -80,7 +80,7 @@ var PostListView = React.createClass({
 var NavigationView = React.createClass({
 
   getHome: function(){
-    var home = {
+    return {
       href: Backbone.history.root + "/#",
       name: "reddit"
     };
